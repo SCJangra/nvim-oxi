@@ -140,7 +140,7 @@ impl Buffer {
     ///
     /// [1]: https://neovim.io/doc/user/api.html#nvim_buf_create_user_command()
     pub fn create_user_command<Cmd>(
-        &mut self,
+        &self,
         name: &str,
         command: Cmd,
         opts: &CreateCommandOpts,
@@ -175,7 +175,7 @@ impl Buffer {
     /// command.
     ///
     /// [1]: https://neovim.io/doc/user/api.html#nvim_buf_del_user_command()
-    pub fn del_user_command(&mut self, name: &str) -> Result<()> {
+    pub fn del_user_command(&self, name: &str) -> Result<()> {
         let mut err = nvim::Error::new();
         let name = nvim::String::from(name);
         unsafe {

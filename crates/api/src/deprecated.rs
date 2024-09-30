@@ -185,7 +185,7 @@ impl Buffer {
         feature = "neovim-nightly",
         deprecated(since = "0.5.0", note = "use `set_option_value` instead")
     )]
-    pub fn set_option<V>(&mut self, name: &str, value: V) -> Result<()>
+    pub fn set_option<V>(&self, name: &str, value: V) -> Result<()>
     where
         V: ToObject,
     {
@@ -242,7 +242,7 @@ impl Window {
         feature = "neovim-nightly",
         deprecated(since = "0.5.0", note = "use `set_option_value` instead")
     )]
-    pub fn set_option<Opt>(&mut self, name: &str, value: Opt) -> Result<()>
+    pub fn set_option<Opt>(&self, name: &str, value: Opt) -> Result<()>
     where
         Opt: ToObject,
     {

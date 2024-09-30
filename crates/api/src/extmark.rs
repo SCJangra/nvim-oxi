@@ -67,7 +67,7 @@ impl Buffer {
     ///
     /// [1]: https://neovim.io/doc/user/api.html#nvim_buf_add_highlight()
     pub fn add_highlight<R>(
-        &mut self,
+        &self,
         ns_id: u32,
         hl_group: &str,
         line: usize,
@@ -101,11 +101,7 @@ impl Buffer {
     /// The line range is 0-indexed.
     ///
     /// [1]: https://neovim.io/doc/user/api.html#nvim_buf_clear_namespace()
-    pub fn clear_namespace<R>(
-        &mut self,
-        ns_id: u32,
-        line_range: R,
-    ) -> Result<()>
+    pub fn clear_namespace<R>(&self, ns_id: u32, line_range: R) -> Result<()>
     where
         R: RangeBounds<usize>,
     {
@@ -128,7 +124,7 @@ impl Buffer {
     /// Removes an extmark from the buffer.
     ///
     /// [1]: https://neovim.io/doc/user/api.html#nvim_buf_del_extmark()
-    pub fn del_extmark(&mut self, ns_id: u32, extmark_id: u32) -> Result<()> {
+    pub fn del_extmark(&self, ns_id: u32, extmark_id: u32) -> Result<()> {
         let mut err = nvim::Error::new();
         let was_found = unsafe {
             nvim_buf_del_extmark(
@@ -269,7 +265,7 @@ impl Buffer {
     ///
     /// [1]: https://neovim.io/doc/user/api.html#nvim_buf_set_extmark()
     pub fn set_extmark(
-        &mut self,
+        &self,
         ns_id: u32,
         line: usize,
         col: usize,
