@@ -26,7 +26,7 @@ use crate::utils;
 use crate::{Error, IntoResult, Result};
 
 /// A wrapper around a Neovim buffer handle.
-#[derive(Clone, Eq, PartialEq, Hash, Serialize, Deserialize)]
+#[derive(Clone, Copy, Eq, PartialEq, Hash, Serialize, Deserialize)]
 #[serde(transparent)]
 pub struct Buffer(pub(crate) BufHandle);
 
