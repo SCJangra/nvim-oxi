@@ -163,7 +163,7 @@ impl Buffer {
     /// Unmaps a buffer-local mapping for the given mode.
     ///
     /// [1]: https://neovim.io/doc/user/api.html#nvim_buf_del_keymap()
-    pub fn del_keymap(&mut self, mode: Mode, lhs: &str) -> Result<()> {
+    pub fn del_keymap(&self, mode: Mode, lhs: &str) -> Result<()> {
         let mut err = nvim::Error::new();
         let mode = nvim::String::from(mode);
         let lhs = nvim::String::from(lhs);
@@ -184,7 +184,7 @@ impl Buffer {
     /// Deletes a named mark in the buffer.
     ///
     /// [1]: https://neovim.io/doc/user/api.html#nvim_buf_del_mark()
-    pub fn del_mark(&mut self, name: char) -> Result<()> {
+    pub fn del_mark(&self, name: char) -> Result<()> {
         let mut err = nvim::Error::new();
         let name = nvim::String::from(name);
         let was_deleted =
@@ -204,7 +204,7 @@ impl Buffer {
     /// Removes a buffer-scoped (`b:`) variable.
     ///
     /// [1]: https://neovim.io/doc/user/api.html#nvim_buf_del_var()
-    pub fn del_var(&mut self, name: &str) -> Result<()> {
+    pub fn del_var(&self, name: &str) -> Result<()> {
         let mut err = nvim::Error::new();
         let name = nvim::String::from(name);
         unsafe { nvim_buf_del_var(self.0, name.non_owning(), &mut err) };
@@ -483,7 +483,7 @@ impl Buffer {
     ///
     /// [1]: https://neovim.io/doc/user/api.html#nvim_buf_set_keymap()
     pub fn set_keymap(
-        &mut self,
+        &self,
         mode: Mode,
         lhs: &str,
         rhs: &str,
@@ -514,7 +514,7 @@ impl Buffer {
     ///
     /// [1]: https://neovim.io/doc/user/api.html#nvim_buf_set_lines()
     pub fn set_lines<Line, Lines, R>(
-        &mut self,
+        &self,
         line_range: R,
         strict_indexing: bool,
         replacement: Lines,
@@ -550,7 +550,7 @@ impl Buffer {
     ///
     /// [1]: https://neovim.io/doc/user/api.html#nvim_buf_set_mark()
     pub fn set_mark(
-        &mut self,
+        &self,
         name: char,
         line: usize,
         col: usize,
@@ -587,7 +587,7 @@ impl Buffer {
     /// Sets the full file name for a buffer.
     ///
     /// [1]: https://neovim.io/doc/user/api.html#nvim_buf_set_name()
-    pub fn set_name<Name: AsRef<Path>>(&mut self, name: Name) -> Result<()> {
+    pub fn set_name<Name: AsRef<Path>>(&self, name: Name) -> Result<()> {
         let name = nvim::String::from(name.as_ref());
         let mut err = nvim::Error::new();
         unsafe { nvim_buf_set_name(self.0, name.non_owning(), &mut err) };
@@ -601,7 +601,7 @@ impl Buffer {
     ///
     /// [1]: https://neovim.io/doc/user/api.html#nvim_buf_set_text()
     pub fn set_text<Line, Lines, R>(
-        &mut self,
+        &self,
         line_range: R,
         start_col: usize,
         end_col: usize,
@@ -640,7 +640,7 @@ impl Buffer {
     /// Sets a buffer-scoped (`b:`) variable.
     ///
     /// [1]: https://neovim.io/doc/user/api.html#nvim_buf_set_var()
-    pub fn set_var<V>(&mut self, name: &str, value: V) -> Result<()>
+    pub fn set_var<V>(&self, name: &str, value: V) -> Result<()>
     where
         V: ToObject,
     {
