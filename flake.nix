@@ -39,6 +39,7 @@
               luajit
               neovim
               pkg-config
+              rustup
             ];
           }
         );

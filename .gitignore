@@ -2,3 +2,5 @@ target/
 lua/
 **/Cargo.lock
 /TODO.md
+.direnv
+.envrc
