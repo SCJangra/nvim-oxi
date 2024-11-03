@@ -2,12 +2,32 @@
 
 ## [Unreleased]
 
+### Added
+
+- a `String::to_str()` method which returns a `&str` if the string contains
+  valid UTF-8 data;
+
+- a `WindowConfig::mouse` field and a `WindowOptsBuilder::mouse()` method
+  on nightly ([#189](https://github.com/noib3/nvim-oxi/pull/189));
+
+- a `string!` macro that produces `nvim_oxi::String`s from string literals;
+
+- a `StringBuilder` struct that can be used to incrementally build
+  `nvim_oxi::String`s;
+
+### Changed
+
+- `nvim_oxi::api::echo` is now generic over the highlight group type instead of
+  expecting a string slice;
+
+- renamed the `lua_<Foo>` types to `<Foo>`;
+
 ## [0.5.1] - June 23 2024
 
 ### Added
 
 - a `handle` method on `Buffer`, `Window`, and `TabPage` which returns the
-  underlying handle ([#176](https://github.com/noib3/nvim-oxi/pull/176)); 
+  underlying handle ([#176](https://github.com/noib3/nvim-oxi/pull/176));
 
 ### Removed
 
@@ -66,7 +86,7 @@
 ## [0.4.0] - Dec 11 2023
 
 [Unreleased]: https://github.com/noib3/nvim-oxi/compare/v0.5.1...HEAD
-[0.5.0]: https://github.com/noib3/nvim-oxi/tree/v0.5.1
+[0.5.1]: https://github.com/noib3/nvim-oxi/tree/v0.5.1
 [0.5.0]: https://github.com/noib3/nvim-oxi/tree/v0.5.0
 [0.4.2]: https://github.com/noib3/nvim-oxi/tree/v0.4.2
 [0.4.1]: https://github.com/noib3/nvim-oxi/tree/v0.4.1
