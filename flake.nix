@@ -14,35 +14,37 @@
     };
   };
 
-  outputs = inputs: with inputs;
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    inputs: with inputs; flake-utils.lib.eachDefaultSystem(system:
       let
         inherit (nixpkgs.lib) lists;
 
-        mkPkgs = isNightly: (import nixpkgs {
-          inherit system;
-          overlays = lists.optionals isNightly [
-            neovim-nightly-overlay.overlay
-          ];
-        });
-
-        mkShell = { nightly }: (
-          let
-            pkgs = mkPkgs nightly;
-            inherit (pkgs) lib stdenv;
-          in
-          pkgs.mkShell {
-            buildInputs = lists.optionals stdenv.isDarwin [ pkgs.libiconv ];
-
-            packages = with pkgs; [
-              gcc
-              luajit
-              neovim
-              pkg-config
-              rustup
+        mkPkgs =
+          isNightly: (import nixpkgs {
+            inherit system;
+            overlays = lists.optionals isNightly [
+              neovim-nightly-overlay.overlays.default
             ];
-          }
-        );
+          });
+
+        mkShell =
+          { nightly }:
+          (
+            let
+              pkgs = mkPkgs nightly;
+              inherit (pkgs) lib stdenv;
+            in
+            pkgs.mkShell {
+              buildInputs = lists.optionals stdenv.isDarwin [ pkgs.libiconv ];
+
+              packages = with pkgs; [
+                gcc
+                luajit
+                neovim
+                pkg-config
+              ];
+            }
+          );
       in
       {
         devShells = {
