@@ -605,13 +605,12 @@ pub fn input_mouse(
 
 /// Binding to [`nvim_list_bufs()`][1].
 ///
-/// Gets the current list of [`Buffer`]s, including unlisted [1]
+/// Gets the current list of [`Buffer`]s, including [unlisted][2]
 /// buffers (like `:ls!`). Use [`Buffer::is_loaded`] to check if a
 /// buffer is loaded.
 ///
 /// [1]: https://neovim.io/doc/user/api.html#nvim_list_bufs()
-///
-/// [1]: unloaded/deleted
+/// [2]: unloaded/deleted
 pub fn list_bufs() -> impl SuperIterator<Buffer> {
     let bufs = unsafe {
         nvim_list_bufs(
@@ -716,20 +715,21 @@ pub fn load_context(ctx: EditorContext) {
 pub fn notify(
     msg: &str,
     log_level: LogLevel,
-    opts: &NotifyOpts,
-) -> Result<()> {
+    opts: &Dictionary,
+) -> Result<Object> {
     let msg = nvim::String::from(msg);
-    let opts = Dictionary::from(opts);
     let mut err = nvim::Error::new();
-    let _ = unsafe {
+    let obj = unsafe {
         nvim_notify(
             msg.non_owning(),
             log_level as Integer,
             opts.non_owning(),
+            #[cfg(feature = "neovim-0-10")] // On 0.10 and nightly.
+            types::arena(),
             &mut err,
         )
     };
-    choose!(err, ())
+    choose!(err, Ok(obj))
 }
 
 /// Binding to [`nvim_open_term()`][1].

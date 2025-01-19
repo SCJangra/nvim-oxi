@@ -78,11 +78,29 @@ pub struct SetHighlightOpts {
     #[builder(skip)]
     sp: Object,
 
-    #[builder(argtype = "&str", inline = "types::String::from({0}).into()")]
+    #[cfg(all(feature = "neovim-0-10", not(feature = "neovim-nightly")))] // Only on 0.10.
+    #[builder(
+        generics = "Hl: crate::HlGroup",
+        argtype = "Hl",
+        inline = r#"{ let Ok(hl_id) = {0}.to_hl_id() else { return self; }; hl_id.into() }"#
+    )]
     link: Object,
 
-    #[builder(argtype = "&str", inline = "types::String::from({0}).into()")]
+    #[cfg(feature = "neovim-nightly")] // Only on Nightly.
+    #[builder(
+        generics = "Hl: crate::HlGroup",
+        argtype = "Hl",
+        inline = r#"{ let Ok(hl_id) = {0}.to_hl_id() else { return self; }; hl_id }"#
+    )]
+    link: types::HlGroupId,
+
+    #[cfg(all(feature = "neovim-0-10", not(feature = "neovim-nightly")))] // Only on 0.10.
+    #[builder(skip)]
     global_link: Object,
+
+    #[cfg(feature = "neovim-nightly")] // Only on Nightly.
+    #[builder(skip)]
+    global_link: types::HlGroupId,
 
     #[builder(argtype = "bool")]
     fallback: Boolean,

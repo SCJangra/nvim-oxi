@@ -15,12 +15,42 @@
 - a `StringBuilder` struct that can be used to incrementally build
   `nvim_oxi::String`s;
 
+- a `nvim_oxi::tests::build()` function to be used in the build script of
+  a crate containing integration tests annotated with `#[nvim_oxi::test]`
+  ([#201](https://github.com/noib3/nvim-oxi/pull/201));
+
+- a series of `Object::as_{kind}_unchecked_mut()` methods to get a mutable
+  reference to an `Object`'s underlying value without performing any runtime
+  checks;
+
+- three `Object::as_{string,array,dictionary}_unchecked()` methods to get a
+  shared reference to an `Object`'s underlying string/array/dictionary without
+  performing any runtime checks;
+
 ### Changed
 
 - `nvim_oxi::api::echo` is now generic over the highlight group type instead of
   expecting a string slice;
 
 - renamed the `lua_<Foo>` types to `<Foo>`;
+
+- the argument of `SetHighlightOptsBuilder::link()` from `&str` to any type
+  implementing `HlGroup`;
+
+- `nvim_oxi::api::notify()` now takes a `&Dictionary` instead of `&NotifyOpts`
+  at its third parameter, and returns `Result<Object>` instead of `Result<()>`
+  ([#208](https://github.com/noib3/nvim-oxi/pull/208));
+
+- renamed `Object::into_dict_unchecked()` to
+  `Object::into_dictionary_unchecked()`;
+
+### Removed
+
+- the `SetHighlightOptsBuilder::global_link()` method. Use
+  `SetHighlightOptsBuilder::link()` instead;
+
+- the argument of `SetHighlightOptsBuilder::{link,global_link}()` from `&str`
+  to any type implementing `HlGroup`;
 
 ## [0.5.1] - June 23 2024
 
